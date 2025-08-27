@@ -1,14 +1,14 @@
 {
-  "name": "@generationsoftware/foundry-template",
+  "name": "@generationsoftware/pt-v5-world-verified-prize-boost-hook",
   "version": "1.0.0",
-  "description": "Template to kickstart a Foundry project",
+  "description": "A prize hook that multiplies wins if the winner's address is verified on worldchain.",
   "author": {
     "name": "G9 Software Inc.",
     "url": "https://github.com/GenerationSoftware"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GenerationSoftware/foundry-template.git"
+    "url": "git+https://github.com/GenerationSoftware/pt-v5-world-verified-prize-boost-hook.git"
   },
   "scripts": {
     "clean": "forge clean",
@@ -19,11 +19,9 @@
     "hint": "solhint --config \"./.solhint.json\" \"{src,test}/**/*.sol\"",
     "lint-staged": "lint-staged",
     "prepack": "npm run clean && npm run compile",
-    "prepare": "husky install",
     "test": "forge test"
   },
   "devDependencies": {
-    "husky": "8.0.3",
     "lint-staged": "15.0.0",
     "prettier": "2.8.8",
     "prettier-plugin-solidity": "1.1.3",
