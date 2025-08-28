@@ -1,0 +1,17 @@
+{
+  "lib/forge-std": {
+    "branch": {
+      "name": "v1",
+      "rev": "ff47d4052a6018d9e5419e5cf013b16ff8006aae"
+    }
+  },
+  "lib/openzeppelin-contracts": {
+    "branch": {
+      "name": "release-v5.0",
+      "rev": "dbb6104ce834628e473d2173bbc9d47f81a9eec3"
+    }
+  },
+  "lib/pt-v5-vault": {
+    "rev": "b8226ab5a88db218dd3e79fae0c0ce6824f05ea6"
+  }
+}
