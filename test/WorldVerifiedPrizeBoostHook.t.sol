@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.24;
 
-import { Test, stdError, Vm } from "../lib/forge-std/src/Test.sol";
+import { Test, Vm } from "../lib/forge-std/src/Test.sol";
 
 import { WorldVerifiedPrizeBoostHook, IERC20 } from "../src/WorldVerifiedPrizeBoostHook.sol";
 import { ERC20Mock } from "../lib/openzeppelin-contracts/contracts/mocks/token/ERC20Mock.sol";

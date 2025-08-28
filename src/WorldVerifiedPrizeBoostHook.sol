@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 import { IPrizeHooks } from "../lib/pt-v5-vault/src/interfaces/IPrizeHooks.sol";
-import { IERC20 } from "../lib/openzeppelin-contracts/contracts/interfaces/IERC20.sol";
+import { IERC20, SafeERC20 } from "../lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Ownable2Step, Ownable } from "../lib/openzeppelin-contracts/contracts/access/Ownable2Step.sol";
 import { IWorldIdAddressBook } from "./interfaces/IWorldIdAddressBook.sol";
 
@@ -11,6 +11,8 @@ import { IWorldIdAddressBook } from "./interfaces/IWorldIdAddressBook.sol";
 /// if the winning address is verified with a world ID.
 /// @author G9 Software Inc.
 contract WorldVerifiedPrizeBoostHook is Ownable2Step, IPrizeHooks {
+    using SafeERC20 for IERC20;
+
     /// @notice Emitted when a prize win is boosted
     /// @param winner The winner of the boosted prize
     /// @param recipient The recipient of the boost
@@ -94,7 +96,7 @@ contract WorldVerifiedPrizeBoostHook is Ownable2Step, IPrizeHooks {
                 PRIZE_TOKEN.balanceOf(address(this)) >= boostAmount
             ) {
                 boostTokensReceived[winner] += boostAmount;
-                PRIZE_TOKEN.transfer(recipient, boostAmount); // boost is sent to the recipient of the prize, if different from the winner's address
+                PRIZE_TOKEN.safeTransfer(recipient, boostAmount); // boost is sent to the recipient of the prize, if different from the winner's address
                 emit VerifiedPrizeBoosted(winner, recipient, msg.sender, prizeAmount, boostAmount, tier);
             }
         }
@@ -105,7 +107,7 @@ contract WorldVerifiedPrizeBoostHook is Ownable2Step, IPrizeHooks {
     /// @param _to The address to send the tokens to
     /// @param _amount The amount of the token to withdraw
     function withdraw(address _token, address _to, uint256 _amount) external onlyOwner {
-        IERC20(_token).transfer(_to, _amount);
+        IERC20(_token).safeTransfer(_to, _amount);
     }
 
     /// @notice ONLY OWNER function to change the boost multiplier
