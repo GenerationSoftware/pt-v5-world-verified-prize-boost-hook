@@ -61,7 +61,7 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
     function testUpdateBoostMultiplier() external {
         vm.startPrank(owner);
         assertEq(boostHook.boostMultiplier(), 1);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit SetBoostMultiplier(2);
         boostHook.setBoostMultiplier(2);
         assertEq(boostHook.boostMultiplier(), 2);
@@ -71,7 +71,7 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
     function testUpdatePerWinnerBoostLimit() external {
         vm.startPrank(owner);
         assertEq(boostHook.perWinnerBoostLimit(), 100);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit SetPerWinnerBoostLimit(200);
         boostHook.setPerWinnerBoostLimit(200);
         assertEq(boostHook.perWinnerBoostLimit(), 200);
@@ -82,12 +82,12 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         vm.startPrank(owner);
         assertEq(boostHook.isEligibleVault(address(this)), false);
 
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit SetVaultEligibility(address(this), true);
         boostHook.setVaultEligibility(address(this), true);
         assertEq(boostHook.isEligibleVault(address(this)), true);
 
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit SetVaultEligibility(address(this), false);
         boostHook.setVaultEligibility(address(this), false);
         assertEq(boostHook.isEligibleVault(address(this)), false);
@@ -100,7 +100,7 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         prizeToken.mint(address(boostHook), 100);
         assertEq(prizeToken.balanceOf(address(boostHook)), 100);
         assertEq(prizeToken.balanceOf(bob), 0);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, 100);
         boostHook.withdraw(address(prizeToken), bob, 100);
         assertEq(prizeToken.balanceOf(address(boostHook)), 0);
@@ -138,7 +138,7 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         vm.stopPrank();
     }
 
-    function testBeforeClaimPrize() external view {
+    function testBeforeClaimPrize() external {
         (address recipient, bytes memory data) = boostHook.beforeClaimPrize(address(0), 0, 0, 0, address(0));
         assertEq(recipient, address(0));
         assertEq(data.length, 0);
@@ -162,9 +162,9 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         prizeToken.mint(address(boostHook), 1e10);
 
         // boost a prize so that alice's boost tokens received equals the boost limit
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, 100);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit VerifiedPrizeBoosted(alice, bob, address(this), 100, 100, 1);
         boostHook.afterClaimPrize(alice, 1, 0, 100, bob, "");
 
@@ -183,9 +183,9 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         prizeToken.mint(address(boostHook), 1e10);
 
         // check if a small prize boost works normally
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, 1);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit VerifiedPrizeBoosted(alice, bob, address(this), 1, 1, 1);
         boostHook.afterClaimPrize(alice, 1, 0, 1, bob, "");
 
@@ -214,9 +214,9 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         vm.startPrank(owner);
         boostHook.setBoostMultiplier(1);
         vm.stopPrank();
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, prizeValue * 1);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit VerifiedPrizeBoosted(alice, bob, address(this), prizeValue, prizeValue * 1, 0);
         boostHook.afterClaimPrize(alice, 0, 0, prizeValue, bob, "");
 
@@ -224,9 +224,9 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         vm.startPrank(owner);
         boostHook.setBoostMultiplier(2);
         vm.stopPrank();
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, prizeValue * 2);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit VerifiedPrizeBoosted(alice, bob, address(this), prizeValue, prizeValue * 2, 0);
         boostHook.afterClaimPrize(alice, 0, 0, prizeValue, bob, "");
 
@@ -234,9 +234,9 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         vm.startPrank(owner);
         boostHook.setBoostMultiplier(5);
         vm.stopPrank();
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, prizeValue * 5);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit VerifiedPrizeBoosted(alice, bob, address(this), prizeValue, prizeValue * 5, 0);
         boostHook.afterClaimPrize(alice, 0, 0, prizeValue, bob, "");
     }
@@ -251,17 +251,17 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         // boost a prize so that alice's boost tokens is one less than the boost limit
         assertEq(boostHook.boostTokensReceived(alice), 0);
         assertEq(boostHook.perWinnerBoostLimit(), 100);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, 99);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit VerifiedPrizeBoosted(alice, bob, address(this), 99, 99, 1);
         boostHook.afterClaimPrize(alice, 1, 0, 99, bob, "");
 
         // alice is just below the limit, so the next prize boost will be limited at 1 token
         assertEq(boostHook.boostTokensReceived(alice), 99);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, 1);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit VerifiedPrizeBoosted(alice, bob, address(this), 100, 1, 1);
         boostHook.afterClaimPrize(alice, 1, 0, 100, bob, "");
         assertEq(boostHook.boostTokensReceived(alice), 100);
@@ -275,9 +275,9 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         prizeToken.mint(address(boostHook), 1e10);
 
         // check if a small prize boost works normally
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, 1);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit VerifiedPrizeBoosted(alice, bob, address(this), 1, 1, 1);
         boostHook.afterClaimPrize(alice, 1, 0, 1, bob, "");
 
@@ -299,9 +299,9 @@ contract WorldVerifiedPrizeBoostHookTest is Test {
         prizeToken.mint(address(boostHook), 1);
 
         // check if a 1 token boost works normally
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit Transfer(address(boostHook), bob, 1);
-        vm.expectEmit();
+        vm.expectEmit(true, true, true, true);
         emit VerifiedPrizeBoosted(alice, bob, address(this), 1, 1, 1);
         boostHook.afterClaimPrize(alice, 1, 0, 1, bob, "");
 
